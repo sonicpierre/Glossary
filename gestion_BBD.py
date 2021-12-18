@@ -22,6 +22,7 @@ def presentation_indicateur(post):
     col1, col2 = c.columns(2)
     col1.markdown("<strong>Etude associé : </strong>" + post["Associated Study"], unsafe_allow_html=True)
     col1.markdown("<strong>Source : </strong>" + post["Source"], unsafe_allow_html=True)
+    col1.markdown("<strong>Frequence : </strong>" + post["Frequence"], unsafe_allow_html=True)
     col2.markdown("<strong>Remark or issues aborded : </strong>" + post["Issues"], unsafe_allow_html=True)
     col2.markdown("<strong>Contact : </strong>" + post["Contact"], unsafe_allow_html=True)
     if(post["Video"]):
