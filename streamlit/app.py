@@ -1,34 +1,17 @@
 import streamlit as st
-from google.oauth2 import service_account
-from google.cloud import firestore
-import json
+import gestion_BBD as bdd
+import utils as ut
 
-st.markdown('# Michelin Market studies')
+db = bdd.connexion(st.secrets["textkey"], "michelin-4180a")
 
-key_dict = json.loads(st.secrets["textkey"])
-creds = service_account.Credentials.from_service_account_info(key_dict)
-db = firestore.Client(credentials=creds, project="michelin-4180a")
+ajout = ut.construction_form_sidebar()
 
-# Streamlit widgets to let a user create a new post
-title = st.text_input("Post title")
-url = st.text_input("Post url")
-submit = st.button("Submit new post")
+st.markdown('# Michelin Research Glossary')
 
-# Once the user has submitted, upload it to the database
-if title and url and submit:
-	doc_ref = db.collection("posts").document(title)
-	doc_ref.set({
-		"title": title,
-		"url": url
-	})
+form_recherche = st.form("Recherche form")
+form_recherche.text_input("Indicateur")
+form_recherche.text_input("Edude")
+recherche = form_recherche.form_submit_button("Rechercher")
 
-# And then render each post, using some light Markdown
-posts_ref = db.collection("posts")
-for doc in posts_ref.stream():
-	post = doc.to_dict()
-	title = post["title"]
-	url = post["url"]
 
-	st.subheader(f"Post: {title}")
-	st.write(f":link: [{url}]({url})")
-
+bdd.lecture_data(db, "posts")
