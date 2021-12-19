@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
 from google.oauth2 import service_account
 from google.cloud import firestore
 import json
@@ -24,7 +23,7 @@ def presentation_indicateur(db, post):
     c.markdown('## ' + post["Name"])
     col1, col2 = c.columns(2)
     if("Associated Study" in post):
-        col1.markdown("<strong>Etude associé : </strong>" + post["Associated Study"], unsafe_allow_html=True)
+        col1.markdown("<strong>Associated study : </strong>" + post["Associated Study"], unsafe_allow_html=True)
     if("Source" in post):
         col1.markdown("<strong>Source : </strong>" + post["Source"], unsafe_allow_html=True)
     if("Frequence" in post):
@@ -49,7 +48,7 @@ def presentation_indicateur(db, post):
                     dico_modif[element] = post[element]  
             db.collection(u'Indicateur').document(post['Name']).set(dico_modif)
 
-    if c.button('Supprimer ', key = post['Name']):
+    if c.button('Delete ', key = post['Name']):
         db.collection(u'Indicateur').document(post['Name']).delete()
         placeholder.empty()
 
