@@ -31,7 +31,17 @@ def construction_formulaire_modif(post):
     dico_entrees["Source"] = col3.text_input("Source")
     dico_entrees["Contact"] = col4.text_input("Contact mail")
     dico_entrees["Explicative Source"] = form.text_input('Explicative source')
-    dico_entrees["Video"] = form.checkbox('Explicative video')
-    dico_entrees["Frequence"] = form.radio("Fréquence",('Daily', 'Monthly', 'Annualy'))
+    if post['Video']:
+        dico_entrees["Video"] = form.checkbox('Explicative video', value = True)
+    else:
+        dico_entrees["Video"] = form.checkbox('Explicative video')
+    if(post['Frequence'] == 'Daily'):
+        index_radio = 0
+    elif (post['Frequence'] == 'Monthly'):
+        index_radio = 1
+    else:
+        index_radio = 2
+
+    dico_entrees["Frequence"] = form.radio("Fréquence",('Daily', 'Monthly', 'Annualy'), index = index_radio)
     form.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     return form.form_submit_button("Modify"), dico_entrees

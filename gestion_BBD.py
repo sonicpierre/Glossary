@@ -45,7 +45,8 @@ def presentation_indicateur(db, post):
         if(form_modif):
             for element in post:
                 if dico_modif[element] == "":
-                    dico_modif[element] = post[element]  
+                    dico_modif[element] = post[element]
+              
             db.collection(u'Indicateur').document(post['Name']).set(dico_modif)
 
     if c.button('Delete ', key = post['Name']):
