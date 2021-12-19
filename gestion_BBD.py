@@ -40,7 +40,7 @@ def presentation_indicateur(db, post):
             c.write("To have more information about this indicator you can see the following source :")
             c.write(post["Explicative Source"])
 
-    with c.expander("Modifier " + post['Name']):
+    with c.expander("Modify " + post['Name']):
         form_modif, dico_modif = ut.construction_formulaire_modif(post)
         if(form_modif):
             for element in post:
