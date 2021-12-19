@@ -1,7 +1,9 @@
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 from google.oauth2 import service_account
 from google.cloud import firestore
 import json
+import utils as ut
 
 def connexion(secret, project_name):
 
@@ -14,10 +16,11 @@ def lecture_data(db, collection_name):
     posts_ref = db.collection(collection_name)
     for doc in posts_ref.stream():
         post = doc.to_dict()
-        presentation_indicateur(post)
+        presentation_indicateur(db, post)
 
-def presentation_indicateur(post):
-    c = st.container()
+def presentation_indicateur(db, post):
+    placeholder = st.empty()
+    c = placeholder.container()
     c.markdown('## ' + post["Name"])
     col1, col2 = c.columns(2)
     if("Associated Study" in post):
@@ -32,14 +35,23 @@ def presentation_indicateur(post):
         col2.markdown("<strong>Contact : </strong>" + post["Contact"], unsafe_allow_html=True)
     if("Video" in post) and ("Explicative Source" in post):
         if(post["Video"]):
-            c.empty()
             c.write("To have more information about this indicator you can see the following video :")
             c.video(post["Explicative Source"])
         else:
-            c.empty()
             c.write("To have more information about this indicator you can see the following source :")
             c.write(post["Explicative Source"])
 
+    with c.expander("Modifier " + post['Name']):
+        form_modif, dico_modif = ut.construction_formulaire_modif(post)
+        if(form_modif):
+            for element in post:
+                if dico_modif[element] == "":
+                    dico_modif[element] = post[element]  
+            db.collection(u'Indicateur').document(post['Name']).set(dico_modif)
+
+    if c.button('Supprimer ', key = post['Name']):
+        db.collection(u'Indicateur').document(post['Name']).delete()
+        placeholder.empty()
 
 def ecriture_data(db, collection_name, dico_form):
 

@@ -29,7 +29,7 @@ if recherche:
     docs = db.collection(u'Indicateur').where(u'Name', u'==', texte_a_chercher).stream()
 
     for doc in docs:
-        bdd.presentation_indicateur(doc.to_dict())
+        bdd.presentation_indicateur(db, doc.to_dict())
 
     if(texte_a_chercher == ""):
         bdd.lecture_data(db, "Indicateur")
