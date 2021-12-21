@@ -4,7 +4,7 @@ def construction_form_sidebar():
     
     dico_entrees = {}
 
-    st.sidebar.image('image/michelin_logo.png')
+    st.sidebar.image('image/glossaire-de-memoire.png')
     form = st.sidebar.form("Input form", clear_on_submit=True)
     dico_entrees["Name"] = form.text_input("Indicator")
     dico_entrees["Associated Study"] = form.text_input("Name associated study")
